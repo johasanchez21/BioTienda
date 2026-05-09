@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class RolServiceImpl implements RolService {
     
-    private RolRepository rolRepository;
+    private final RolRepository rolRepository;
 
     @Override
     @Transactional(readOnly = true)

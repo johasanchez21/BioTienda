@@ -22,13 +22,11 @@ public class UsuarioDTO {
         private String nombre;
 
         @NotBlank(message = "El email es obligatorio")
-        @Pattern(regexp = "^[\\w\\sáéíóúÁÉÍÓÚñÑ]{2,}\\s+[\\w\\sáéíóúÁÉÍÓÚñÑ]{2,}.*$",
-                 message = "El email debe contener al menos 2 palabras")
+        @Email(message = "Formato de email inválido")
         private String email;
 
         @NotBlank(message = "El password es obligatorio")
-        @Pattern(regexp = "^[\\w\\sáéíóúÁÉÍÓÚñÑ]{2,}\\s+[\\w\\sáéíóúÁÉÍÓÚñÑ]{2,}.*$",
-                 message = "El password debe contener al menos 2 palabras")
+
         private String password;
 
         @NotNull(message = "El ID del Rol es obligatorio")

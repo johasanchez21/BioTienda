@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class PermisoServiceImpl implements PermisoService{
     
-    private PermisoRepository permisoRepository;
+    private final PermisoRepository permisoRepository;
 
     @Override
     @Transactional(readOnly = true)

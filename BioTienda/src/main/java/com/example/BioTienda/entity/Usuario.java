@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -39,14 +40,11 @@ public class Usuario {
     private String nombre;
 
     @NotBlank(message = "El email es obligatorio")
-    @Pattern(regexp = "^[\\w\\sáéíóúÁÉÍÓÚñÑ]{2,}\\s+[\\w\\sáéíóúÁÉÍÓÚñÑ]{2,}.*$",
-             message = "El email debe contener al menos 2 palabras")
+    @Email(message = "Formato de email inválido")
     @Column(nullable = false, length = 100)
     private String email;
 
     @NotBlank(message = "El password es obligatorio")
-    @Pattern(regexp = "^[\\w\\sáéíóúÁÉÍÓÚñÑ]{2,}\\s+[\\w\\sáéíóúÁÉÍÓÚñÑ]{2,}.*$",
-             message = "El password debe contener al menos 2 palabras")
     @Column(nullable = false, length = 100)
     private String password;
 
