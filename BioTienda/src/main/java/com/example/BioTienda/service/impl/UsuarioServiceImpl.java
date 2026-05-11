@@ -1,5 +1,6 @@
 package com.example.BioTienda.service.impl;
 
+import com.example.BioTienda.dto.PermisoDTO;
 import com.example.BioTienda.dto.RolDTO;
 import com.example.BioTienda.dto.UsuarioDTO;
 import com.example.BioTienda.entity.Usuario;
@@ -114,24 +115,57 @@ public class UsuarioServiceImpl implements UsuarioService{
         return mapToResponse(actualizado);
     }
 
-    @Override
-    @Transactional
-    public void eliminar(Long id) {
-        log.info("Eliminando usuario con id: {}", id);
+        @Override
+        @Transactional
+        public void eliminar(Long id) {
+            log.info("Eliminando usuario con id: {}", id);
 
-        if (!usuarioRepository.existsById(id)) {
-            throw new RuntimeException("Usuario no encontrada con id: " + id);
+            if (!usuarioRepository.existsById(id)) {
+                throw new RuntimeException("Usuario no encontrada con id: " + id);
+            }
+
+            usuarioRepository.deleteById(id);
+            log.info("Usuario eliminada con id: {}", id);
         }
 
-        usuarioRepository.deleteById(id);
-        log.info("Usuario eliminada con id: {}", id);
-    }
+        public Usuario desactivarUsuario(Long id) {
+
+            Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+            usuario.setActivo(false);
+
+            return usuarioRepository.save(usuario);
+        }
+
+        @Override
+        public Usuario activarUsuario(Long id) {
+
+            Usuario usuario = usuarioRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+            usuario.setActivo(true);
+
+            return usuarioRepository.save(usuario);
+        }
 
 
     private UsuarioDTO.Response mapToResponse(Usuario usuario) {
+
+        List<PermisoDTO.Response> permisosResponse =
+                usuario.getRol()
+                        .getPermisos()
+                        .stream()
+                        .map(permiso -> new PermisoDTO.Response(
+                                permiso.getId(),
+                                permiso.getNombre()
+                        ))
+                        .toList();
+
         RolDTO.Response rolResponse = new RolDTO.Response(
                 usuario.getRol().getId(),
-                usuario.getRol().getNombre()
+                usuario.getRol().getNombre(),
+                permisosResponse
         );
 
         return new UsuarioDTO.Response(
@@ -139,7 +173,7 @@ public class UsuarioServiceImpl implements UsuarioService{
                 usuario.getRut(),
                 usuario.getNombre(),
                 usuario.getEmail(),
-                usuario.getPassword(),
+                usuario.getActivo(),
                 rolResponse
         );
     }

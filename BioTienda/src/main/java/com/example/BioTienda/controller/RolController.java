@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.BioTienda.dto.RolDTO;
+import com.example.BioTienda.entity.Rol;
 import com.example.BioTienda.service.RolService;
 
 import jakarta.validation.Valid;
@@ -63,4 +64,13 @@ public class RolController {
         rolService.eliminar(id);
         return ResponseEntity.noContent().build(); 
     }
+
+    @PutMapping("/{rolId}/permisos")
+    public Rol asignarPermisos(
+            @PathVariable Long rolId,
+            @RequestBody List<Long> permisosIds) {
+
+        return rolService.asignarPermisos(rolId, permisosIds);
+    }
 }
+

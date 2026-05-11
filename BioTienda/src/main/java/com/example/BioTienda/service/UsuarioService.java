@@ -3,6 +3,7 @@ package com.example.BioTienda.service;
 import java.util.List;
 
 import com.example.BioTienda.dto.UsuarioDTO;
+import com.example.BioTienda.entity.Usuario;
 
 public interface UsuarioService {
     
@@ -17,6 +18,10 @@ public interface UsuarioService {
     UsuarioDTO.Response crear(UsuarioDTO.Request request);
 
     UsuarioDTO.Response actualizar(Long id, UsuarioDTO.Request request);
+    
+    Usuario desactivarUsuario(Long id);
+
+    Usuario activarUsuario(Long id);
 
     void eliminar(Long id);
 }

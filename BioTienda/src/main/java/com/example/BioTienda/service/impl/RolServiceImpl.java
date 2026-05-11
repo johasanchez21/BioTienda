@@ -6,8 +6,11 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.BioTienda.dto.PermisoDTO;
 import com.example.BioTienda.dto.RolDTO;
+import com.example.BioTienda.entity.Permiso;
 import com.example.BioTienda.entity.Rol;
+import com.example.BioTienda.repository.PermisoRepository;
 import com.example.BioTienda.repository.RolRepository;
 import com.example.BioTienda.service.RolService;
 
@@ -20,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 public class RolServiceImpl implements RolService {
     
     private final RolRepository rolRepository;
+    private final PermisoRepository permisoRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -91,7 +95,34 @@ public class RolServiceImpl implements RolService {
         log.info("Rol eliminado con id: {}", id);
     }
 
-    private RolDTO.Response mapToResponse(Rol rol) {
-        return new RolDTO.Response(rol.getId(), rol.getNombre());
+    @Override
+    public Rol asignarPermisos(Long rolId, List<Long> permisosIds) {
+
+        Rol rol = rolRepository.findById(rolId)
+                .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
+
+        List<Permiso> permisos = permisoRepository.findAllById(permisosIds);
+
+        rol.setPermisos(permisos);
+
+        return rolRepository.save(rol);
     }
+
+    private RolDTO.Response mapToResponse(Rol rol) {
+
+    List<PermisoDTO.Response> permisosResponse =
+            rol.getPermisos()
+                    .stream()
+                    .map(permiso -> new PermisoDTO.Response(
+                            permiso.getId(),
+                            permiso.getNombre()
+                    ))
+                    .toList();
+
+    return new RolDTO.Response(
+            rol.getId(),
+            rol.getNombre(),
+            permisosResponse
+    );
+}
 }

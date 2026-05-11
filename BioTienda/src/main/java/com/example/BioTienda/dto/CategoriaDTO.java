@@ -1,17 +1,18 @@
 package com.example.BioTienda.dto;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-public class PermisoDTO {
-    @Data
+public class CategoriaDTO {
+
+     @Data
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Request {
 
-        @NotBlank(message = "El nombre del Permiso es obligatorio")
+        @NotBlank(message = "El nombre de la categoria es obligatorio")
         private String nombre;
     }
 
@@ -23,4 +24,3 @@ public class PermisoDTO {
         private String nombre;
     }
 }
-

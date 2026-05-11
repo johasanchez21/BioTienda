@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.BioTienda.dto.UsuarioDTO;
+import com.example.BioTienda.entity.Usuario;
 import com.example.BioTienda.service.UsuarioService;
 
 import jakarta.validation.Valid;
@@ -65,6 +66,17 @@ public class UsuarioController {
             @Valid @RequestBody UsuarioDTO.Request request) {
         log.debug("PUT /api/usuarios/{}", id);
         return ResponseEntity.ok(usuarioService.actualizar(id, request));
+    }
+
+    @PutMapping("/{id}/desactivar")
+        public Usuario desactivarUsuario(@PathVariable Long id) {
+        return usuarioService.desactivarUsuario(id);
+    }
+
+    @PutMapping("/{id}/activar")
+    public Usuario activarUsuario(@PathVariable Long id) {
+
+        return usuarioService.activarUsuario(id);
     }
 
     @DeleteMapping("/{id}")
