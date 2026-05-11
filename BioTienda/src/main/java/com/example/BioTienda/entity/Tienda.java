@@ -35,8 +35,7 @@ public class Tienda {
     private String direccion;
 
     @NotBlank(message = "La ciudad es obligatoria")
-    @Pattern(regexp = "^[\\w\\sáéíóúÁÉÍÓÚñÑ]{2,}\\s+[\\w\\sáéíóúÁÉÍÓÚñÑ]{2,}.*$",
-             message = "La ciudad debe contener al menos 2 palabras")
+    @Size(min = 3, max = 100, message = "La ciudad debe tener entre 3 y 100 caracteres")
     @Column(nullable = false, length = 100)
     private String ciudad;
 

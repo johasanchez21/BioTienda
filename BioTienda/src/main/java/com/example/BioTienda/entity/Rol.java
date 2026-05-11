@@ -1,5 +1,6 @@
 package com.example.BioTienda.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -29,5 +30,6 @@ public class Rol {
         joinColumns = @JoinColumn(name = "rol_id"),
         inverseJoinColumns = @JoinColumn(name = "permiso_id")
     )
-    private List<Permiso> permisos;
+    
+    private List<Permiso> permisos = new ArrayList<>();
 }

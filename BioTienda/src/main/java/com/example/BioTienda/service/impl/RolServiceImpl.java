@@ -1,5 +1,6 @@
 package com.example.BioTienda.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -111,18 +112,21 @@ public class RolServiceImpl implements RolService {
     private RolDTO.Response mapToResponse(Rol rol) {
 
     List<PermisoDTO.Response> permisosResponse =
-            rol.getPermisos()
+        rol.getPermisos() == null
+                ? new ArrayList<>()
+                : rol.getPermisos()
                     .stream()
                     .map(permiso -> new PermisoDTO.Response(
                             permiso.getId(),
                             permiso.getNombre()
                     ))
-                    .toList();
+                    .toList();           
 
     return new RolDTO.Response(
             rol.getId(),
             rol.getNombre(),
             permisosResponse
     );
+    
 }
 }
