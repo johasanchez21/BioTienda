@@ -1,0 +1,371 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-rol
+      author: johann
+      changes:
+        - createTable:
+            tableName: rol
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: nombre
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+  - changeSet:
+      id: 002-create-permiso
+      author: johann
+      changes:
+        - createTable:
+            tableName: permiso
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: nombre
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+  - changeSet:
+      id: 003-create-rol-permiso
+      author: johann
+      changes:
+        - createTable:
+            tableName: rol_permiso
+            columns:
+              - column:
+                  name: rol_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: permiso_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: rol_permiso
+            baseColumnNames: rol_id
+            referencedTableName: rol
+            referencedColumnNames: id
+            constraintName: fk_rol_permiso_rol
+        - addForeignKeyConstraint:
+            baseTableName: rol_permiso
+            baseColumnNames: permiso_id
+            referencedTableName: permiso
+            referencedColumnNames: id
+            constraintName: fk_rol_permiso_permiso
+
+  - changeSet:
+      id: 004-create-usuario
+      author: johann
+      changes:
+        - createTable:
+            tableName: usuario
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: rut
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: nombre
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(150)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: activo
+                  type: BOOLEAN
+                  defaultValueBoolean: true
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rol_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: usuario
+            baseColumnNames: rol_id
+            referencedTableName: rol
+            referencedColumnNames: id
+            constraintName: fk_usuario_rol
+
+  - changeSet:
+      id: 005-create-tienda
+      author: johann
+      changes:
+        - createTable:
+            tableName: tienda
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: nombre
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: direccion
+                  type: VARCHAR(150)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: ciudad
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: horario
+                  type: VARCHAR(150)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 006-create-categoria
+      author: johann
+      changes:
+        - createTable:
+            tableName: categoria
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: nombre
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+  - changeSet:
+      id: 007-create-producto
+      author: johann
+      changes:
+        - createTable:
+            tableName: producto
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: nombre
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: descripcion
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: precio
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: stock
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: activo
+                  type: BOOLEAN
+                  defaultValueBoolean: true
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 008-create-inventario
+      author: johann
+      changes:
+        - createTable:
+            tableName: inventario
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: cantidad
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: producto_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tienda_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: inventario
+            baseColumnNames: producto_id
+            referencedTableName: producto
+            referencedColumnNames: id
+            constraintName: fk_inventario_producto
+        - addForeignKeyConstraint:
+            baseTableName: inventario
+            baseColumnNames: tienda_id
+            referencedTableName: tienda
+            referencedColumnNames: id
+            constraintName: fk_inventario_tienda
+
+  - changeSet:
+      id: 009-create-carrito
+      author: johann
+      changes:
+        - createTable:
+            tableName: carrito
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: usuario_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    unique: true
+        - addForeignKeyConstraint:
+            baseTableName: carrito
+            baseColumnNames: usuario_id
+            referencedTableName: usuario
+            referencedColumnNames: id
+            constraintName: fk_carrito_usuario
+
+  - changeSet:
+      id: 010-create-carrito-item
+      author: johann
+      changes:
+        - createTable:
+            tableName: carrito_item
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: cantidad
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: precio
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: carrito_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: producto_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: carrito_item
+            baseColumnNames: carrito_id
+            referencedTableName: carrito
+            referencedColumnNames: id
+            constraintName: fk_carrito_item_carrito
+        - addForeignKeyConstraint:
+            baseTableName: carrito_item
+            baseColumnNames: producto_id
+            referencedTableName: producto
+            referencedColumnNames: id
+            constraintName: fk_carrito_item_producto
+
+  - changeSet:
+      id: 011-create-pedido
+      author: johann
+      changes:
+        - createTable:
+            tableName: pedido
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: total
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: estado
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: fecha
+                  type: DATETIME
+                  constraints:
+                    nullable: false
+              - column:
+                  name: usuario_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: pedido
+            baseColumnNames: usuario_id
+            referencedTableName: usuario
+            referencedColumnNames: id
+            constraintName: fk_pedido_usuario
