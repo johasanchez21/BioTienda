@@ -8,9 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class ProductoDTO {
     @Data
     @NoArgsConstructor
@@ -34,9 +31,10 @@ public class ProductoDTO {
     @Positive(message = "El stock debe ser mayor a 0")
     @Column(nullable = false)
     private Integer stock;
-    }
 
     private boolean activo = true;
+    }
+
 
     @Data
     @NoArgsConstructor
